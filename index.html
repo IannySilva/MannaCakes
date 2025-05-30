@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pedido de Bolo</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #fff8f0;
+      padding: 20px;
+      max-width: 500px;
+      margin: auto;
+    }
+    h1 {
+      text-align: center;
+      color: #d2691e;
+    }
+    label {
+      font-weight: bold;
+      margin-top: 10px;
+      display: block;
+    }
+    select, textarea, button {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      margin-bottom: 15px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background-color: #d2691e;
+      color: white;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #a0522d;
+    }
+  </style>
+</head>
+<body>
+  <h1>Monte seu Bolo</h1>
+
+  <label for="tamanho">Tamanho</label>
+  <select id="tamanho">
+    <option>Pequeno (1kg)</option>
+    <option>Médio (2kg)</option>
+    <option>Grande (3kg)</option>
+  </select>
+
+  <label for="sabor">Sabor</label>
+  <select id="sabor">
+    <option>Chocolate</option>
+    <option>Baunilha</option>
+    <option>Red Velvet</option>
+    <option>Doce de Leite</option>
+  </select>
+
+  <label for="recheio">Recheio</label>
+  <select id="recheio">
+    <option>Brigadeiro</option>
+    <option>Beijinho</option>
+    <option>Morango</option>
+    <option>Nutella</option>
+  </select>
+
+  <label for="adicionais">Adicionais</label>
+  <select id="adicionais">
+    <option>Sem adicionais</option>
+    <option>Granulado</option>
+    <option>Frutas</option>
+    <option>Chantilly</option>
+  </select>
+
+  <label for="obs">Observações</label>
+  <textarea id="obs" placeholder="Ex: Sem lactose, nome escrito no topo..."></textarea>
+
+  <button onclick="enviarPedido()">Fazer Pedido pelo WhatsApp</button>
+
+  <script>
+    function enviarPedido() {
+      const tamanho = document.getElementById("tamanho").value;
+      const sabor = document.getElementById("sabor").value;
+      const recheio = document.getElementById("recheio").value;
+      const adicionais = document.getElementById("adicionais").value;
+      const obs = document.getElementById("obs").value;
+
+      const msg = `Olá! Gostaria de fazer um pedido de bolo:%0A
+      🧁 Tamanho: ${tamanho}%0A
+      🍰 Sabor: ${sabor}%0A
+      🎂 Recheio: ${recheio}%0A
+      ➕ Adicionais: ${adicionais}%0A
+      ✍️ Observações: ${obs || "Nenhuma"}`;
+
+      const telefone = "SEU_NUMERO"; // Ex: 11947640461
+      const url = `https://wa.me/${telefone}?text=${encodeURI(msg)}`;
+      window.open(url, "_blank");
+    }
+  </script>
+</body>
+</html>
