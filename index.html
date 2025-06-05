@@ -9,7 +9,7 @@
       font-family: Arial, sans-serif;
       background-color: #fff8f0;
       padding: 20px;
-      max-width: 600px;
+      max-width: 500px;
       margin: auto;
     }
     h1 {
@@ -39,11 +39,11 @@
     button:hover {
       background-color: #a0522d;
     }
-    #preco {
-      font-size: 1.1em;
+    #precoTotal {
       font-weight: bold;
-      color: #444;
-      margin-bottom: 15px;
+      color: green;
+      font-size: 18px;
+      text-align: center;
     }
   </style>
 </head>
@@ -59,129 +59,84 @@
 
   <label for="tamanho">Tamanho</label>
   <select id="tamanho" onchange="atualizarPreco()">
-    <option>Selecione o formato primeiro</option>
+    <option value="">Selecione o tamanho</option>
   </select>
 
- <label for="sabor">Sabor</label>
-<select id="sabor" onchange="atualizarPreco()">
-  <option value="">Selecione o sabor</option>
-  
-  <!-- Comuns -->
-  <option value="comum_brigadeiro">Brigadeiro (comum)</option>
-  <option value="comum_leiteninho">Leite Ninho (comum)</option>
-  <option value="comum_prestigio">Prestígio (comum)</option>
-  <option value="comum_beijinho">Beijinho (comum)</option>
-  <option value="comum_docedeleite">Doce de Leite (comum)</option>
-  
-  <!-- Especiais -->
-  <option value="especial_brigadeiro_amendoim">Brigadeiro c/ Amendoim (especial)</option>
-  <option value="especial_brigadeiro_morango">Brigadeiro c/ Morango (especial)</option>
-  <option value="especial_docedeleite_morango">Doce de Leite c/ Morango (especial)</option>
-  <option value="especial_docedeleite_beijinho">Doce de Leite / Beijinho (especial)</option>
-  <option value="especial_docedeleite_ameixa">Doce de Leite c/ Ameixa (especial)</option>
-  <option value="especial_docedeleite_abacaxi_beijinho">Doce de Leite, Abacaxi / Beijinho (especial)</option>
-  <option value="especial_abacaxi_ninho">Abacaxi c/ Leite Ninho (especial)</option>
-  <option value="especial_abacaxi_docedeleite">Abacaxi c/ Doce de Leite (especial)</option>
-  <option value="especial_dois_amores">2 Amores (Brigadeiro c/ Prestígio) (especial)</option>
-  <option value="especial_ninho_morango">Ninho c/ Morango (especial)</option>
-  <option value="especial_ninho_brigadeiro">Ninho / Brigadeiro (especial)</option>
-  <option value="especial_ninho_morango_brigadeiro">Ninho c/ Morango / Brig. c/ Morango (especial)</option>
-  <option value="especial_brigadeiro_maracuja">Brigadeiro de Maracujá (especial)</option>
-  <option value="especial_brigadeiro_maracuja_trad">Brigadeiro de Maracujá / Brigadeiro (especial)</option>
-  <option value="especial_mousse_ninho_morango">Mousse de Ninho c/ Morango (especial)</option>
-  <option value="especial_mousse_morango_brigadeiro">Mousse de Morango com Brigadeiro (especial)</option>
-  <option value="especial_mousse_chocolate">Mousse de Chocolate (especial)</option>
-  <option value="especial_mousse_chocolate_brigadeiro">Mousse de Chocolate c/ Brigadeiros (especial)</option>
-  <option value="especial_mousse_chocolate_morango">Mousse de Chocolate c/ Morango (especial)</option>
-  <option value="especial_mousse_chocolate_prestigio">Mousse de Chocolate c/ Prestígio (especial)</option>
-  <option value="especial_mousse_4leites_abacaxi">Mousse de 4 Leites c/ Abacaxi (especial)</option>
-  <option value="especial_mousse_chocolate_branco">Mousse de Chocolate Branco c/ Pedaços (especial)</option>
-  <option value="especial_mousse_maracuja">Mousse de Maracujá (especial)</option>
-  <option value="especial_mousse_maracuja_brigadeiro">Mousse de Maracujá com Brigadeiro (especial)</option>
-</select>
-
-
-  <div id="preco">Valor do Bolo: R$ 0,00</div>
-
-  <label for="recheio">Recheio</label>
-  <select id="recheio">
-    <option>Brigadeiro</option>
-    <option>Beijinho</option>
-    <option>Morango</option>
-    <option>Nutella</option>
+  <label for="sabor">Sabor</label>
+  <select id="sabor" onchange="atualizarPreco()">
+    <option value="">Selecione o sabor</option>
+    <option value="comum_brigadeiro">Brigadeiro (comum)</option>
+    <option value="comum_leiteninho">Leite Ninho (comum)</option>
+    <option value="comum_prestigio">Prestígio (comum)</option>
+    <option value="comum_beijinho">Beijinho (comum)</option>
+    <option value="comum_docedeleite">Doce de Leite (comum)</option>
+    <option value="especial_brigadeiroamendoim">Brigadeiro c/ Amendoim (especial)</option>
+    <option value="especial_brigmorango">Brigadeiro c/ Morango (especial)</option>
+    <option value="especial_doceleitemor">Doce de Leite c/ Morango (especial)</option>
+    <option value="especial_doceleitebj">Doce de Leite / Beijinho (especial)</option>
+    <option value="especial_doceleiteamei">Doce de Leite c/ Ameixa (especial)</option>
+    <option value="especial_docedeleiteabacaxi">Doce de Leite, Abacaxi / Beijinho (especial)</option>
+    <option value="especial_abacaxi">Abacaxi c/ Leite Ninho (especial)</option>
+    <option value="especial_abacaxidoce">Abacaxi c/ Doce de Leite (especial)</option>
+    <option value="especial_doisamores">2 Amores (Brigadeiro c/ Prestígio) (especial)</option>
+    <option value="especial_ninhomor">Ninho c/ Morango (especial)</option>
+    <option value="especial_ninhobrig">Ninho / Brigadeiro (especial)</option>
+    <option value="especial_ninhobrimor">Ninho c/ Morango / Brig. c/ Morango (especial)</option>
+    <option value="especial_maracuja">Brigadeiro de Maracujá (especial)</option>
+    <option value="especial_maracujabrig">Brigadeiro de Maracujá / Brigadeiro (especial)</option>
+    <option value="especial_mousseninho">Mousse de Ninho c/ Morango (especial)</option>
+    <option value="especial_moussemorbrig">Mousse de Morango c/ Brigadeiro (especial)</option>
+    <option value="especial_moussechoc">Mousse de Chocolate (especial)</option>
+    <option value="especial_moussebri">Mousse de Chocolate c/ Brigadeiros (especial)</option>
+    <option value="especial_moussemor">Mousse de Chocolate c/ Morango (especial)</option>
+    <option value="especial_moussepres">Mousse de Chocolate c/ Prestígio (especial)</option>
+    <option value="especial_mousseabacaxi">Mousse de 4 Leites c/ Abacaxi (especial)</option>
+    <option value="especial_moussebranco">Mousse de Chocolate Branco c/ Pedaços (especial)</option>
+    <option value="especial_moussemaracuja">Mousse de Maracujá (especial)</option>
   </select>
 
-  <label for="adicionais">Adicionais</label>
-  <select id="adicionais">
-    <option>Sem adicionais</option>
-    <option>Granulado</option>
-    <option>Frutas</option>
-    <option>Chantilly</option>
+  <label for="adicional">Adicional</label>
+  <select id="adicional" onchange="atualizarPreco()">
+    <option value="0">Nenhum</option>
+    <option value="15">Topper Simples (+ R$15,00)</option>
+    <option value="30">Topper 3D (+ R$30,00)</option>
   </select>
 
   <label for="obs">Observações</label>
   <textarea id="obs" placeholder="Ex: Sem lactose, nome escrito no topo..."></textarea>
 
+  <p id="precoTotal"></p>
+
   <button onclick="enviarPedido()">Fazer Pedido pelo WhatsApp</button>
 
   <script>
-    const precos = {
-      redondo: {
-        PP: 80,
-        P: 125,
-        M: 200,
-        G: 255
-      },
-      retangular: {
-        P: 185,
-        M: 220,
-        G: 295
-      },
-      adicionalEspecial: {
-        redondo: {
-          PP: 10,
-          P: 15,
-          M: 20,
-          G: 25
-        },
-        retangular: {
-          P: 15,
-          M: 30,
-          G: 30
-        }
-      }
-    };
-
-    const tamanhos = {
-      redondo: [
-        { nome: "PP", info: "4 a 8 fatias - R$ 80,00 (comum) / R$ 90,00 (especial)" },
-        { nome: "P", info: "10 a 15 fatias - R$ 125,00 (comum) / R$ 140,00 (especial)" },
-        { nome: "M", info: "20 a 22 fatias - R$ 200,00 (comum) / R$ 220,00 (especial)" },
-        { nome: "G", info: "32 a 38 fatias - R$ 255,00 (comum) / R$ 280,00 (especial)" }
-      ],
-      retangular: [
-        { nome: "P", info: "15 a 20 fatias - R$ 185,00 (comum) / R$ 200,00 (especial)" },
-        { nome: "M", info: "30 a 35 fatias - R$ 220,00 (comum) / R$ 250,00 (especial)" },
-        { nome: "G", info: "40 a 45 fatias - R$ 295,00 (comum) / R$ 325,00 (especial)" }
-      ]
-    };
-
     function atualizarTamanhos() {
       const formato = document.getElementById("formato").value;
-      const selectTamanho = document.getElementById("tamanho");
-      selectTamanho.innerHTML = "";
+      const tamanhoSelect = document.getElementById("tamanho");
+      tamanhoSelect.innerHTML = '<option value="">Selecione o tamanho</option>';
 
-      if (!formato) {
-        selectTamanho.innerHTML = "<option>Selecione o formato primeiro</option>";
-        return;
+      const opcoes = {
+        redondo: [
+          { value: "pp", text: "PP (4 a 8 fatias)" },
+          { value: "p", text: "P (10 a 15 fatias)" },
+          { value: "m", text: "M (20 a 22 fatias)" },
+          { value: "g", text: "G (32 a 38 fatias)" },
+        ],
+        retangular: [
+          { value: "p", text: "P (15 a 20 fatias)" },
+          { value: "m", text: "M (30 a 35 fatias)" },
+          { value: "g", text: "G (40 a 45 fatias)" },
+        ],
+      };
+
+      if (formato && opcoes[formato]) {
+        opcoes[formato].forEach(opt => {
+          const option = document.createElement("option");
+          option.value = opt.value;
+          option.textContent = opt.text;
+          tamanhoSelect.appendChild(option);
+        });
       }
-
-      tamanhos[formato].forEach(t => {
-        const option = document.createElement("option");
-        option.value = t.nome;
-        option.textContent = `${t.nome} - ${t.info}`;
-        selectTamanho.appendChild(option);
-      });
 
       atualizarPreco();
     }
@@ -190,36 +145,53 @@
       const formato = document.getElementById("formato").value;
       const tamanho = document.getElementById("tamanho").value;
       const sabor = document.getElementById("sabor").value;
-      const precoBase = precos[formato]?.[tamanho] || 0;
-      let total = precoBase;
+      const adicional = parseFloat(document.getElementById("adicional").value);
 
-      if (sabor.includes("especial")) {
-        const adicional = precos.adicionalEspecial[formato]?.[tamanho] || 0;
-        total += adicional;
+      let precoBase = 0;
+
+      const precos = {
+        redondo: {
+          pp: { comum: 80, especial: 90 },
+          p: { comum: 125, especial: 140 },
+          m: { comum: 200, especial: 220 },
+          g: { comum: 255, especial: 280 },
+        },
+        retangular: {
+          p: { comum: 185, especial: 200 },
+          m: { comum: 220, especial: 250 },
+          g: { comum: 295, especial: 325 },
+        },
+      };
+
+      const tipoSabor = sabor.startsWith("especial") ? "especial" : "comum";
+
+      if (formato && tamanho && precos[formato] && precos[formato][tamanho]) {
+        precoBase = precos[formato][tamanho][tipoSabor];
       }
 
-      document.getElementById("preco").innerText = `Valor do Bolo: R$ ${total.toFixed(2).replace(".", ",")}`;
+      const precoFinal = precoBase + adicional;
+
+      document.getElementById("precoTotal").innerText =
+        precoFinal ? `Total: R$ ${precoFinal.toFixed(2).replace(".", ",")}` : "";
     }
 
     function enviarPedido() {
       const formato = document.getElementById("formato").value;
       const tamanho = document.getElementById("tamanho").value;
-      const sabor = document.getElementById("sabor").selectedOptions[0].textContent;
-      const recheio = document.getElementById("recheio").value;
-      const adicionais = document.getElementById("adicionais").value;
+      const sabor = document.getElementById("sabor").value;
+      const adicionalTexto = document.getElementById("adicional").options[document.getElementById("adicional").selectedIndex].text;
       const obs = document.getElementById("obs").value;
-      const valor = document.getElementById("preco").innerText;
+      const preco = document.getElementById("precoTotal").innerText;
 
-      const msg = `Olá! Gostaria de fazer um pedido de bolo:%0A
-      🧁 Formato: ${formato}%0A
-      📏 Tamanho: ${tamanho}%0A
-      🍰 Sabor: ${sabor}%0A
-      🎂 Recheio: ${recheio}%0A
-      ➕ Adicionais: ${adicionais}%0A
-      ✍️ Observações: ${obs || "Nenhuma"}%0A
-      💰 ${valor}`;
+      const msg = `Olá! Gostaria de fazer um pedido de bolo:\n
+📐 Formato: ${formato}\n
+📏 Tamanho: ${tamanho}\n
+🍰 Sabor: ${sabor.replace("_", " ")}\n
+🎁 Adicional: ${adicionalTexto}\n
+📝 Observações: ${obs || "Nenhuma"}\n
+💵 ${preco}`;
 
-      const telefone = "5511947640461";
+      const telefone = "5511947640461"; // Ex: 11947640461
       const url = `https://wa.me/${telefone}?text=${encodeURIComponent(msg)}`;
       window.open(url, "_blank");
     }
