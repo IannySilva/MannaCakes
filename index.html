@@ -176,25 +176,40 @@
     }
 
     function enviarPedido() {
-      const formato = document.getElementById("formato").value;
-      const tamanho = document.getElementById("tamanho").value;
-      const sabor = document.getElementById("sabor").value;
-      const adicionalTexto = document.getElementById("adicional").options[document.getElementById("adicional").selectedIndex].text;
-      const obs = document.getElementById("obs").value;
-      const preco = document.getElementById("precoTotal").innerText;
+  const formato = document.getElementById("formato").value;
+  const tamanho = document.getElementById("tamanho").value;
+  const saborSelecionado = document.getElementById("sabor").value;
+  const adicionalSelecionado = document.querySelector('input[name="adicional"]:checked');
+  const obs = document.getElementById("obs").value;
 
-      const msg = `Olá! Gostaria de fazer um pedido de bolo:\n
-📐 Formato: ${formato}\n
-📏 Tamanho: ${tamanho}\n
-🍰 Sabor: ${sabor.replace("_", " ")}\n
-🎁 Adicional: ${adicionalTexto}\n
-📝 Observações: ${obs || "Nenhuma"}\n
-💵 ${preco}`;
+  // Busca o valor base do bolo
+  let preco = calcularPreco(formato, tamanho, saborSelecionado);
 
-      const telefone = "5511947640461"; // Ex: 11947640461
-      const url = `https://wa.me/${telefone}?text=${encodeURIComponent(msg)}`;
-      window.open(url, "_blank");
-    }
-  </script>
-</body>
-</html>
+  // Informações do adicional
+  let adicionalTexto = "Sem adicionais";
+  if (adicionalSelecionado && adicionalSelecionado.value !== "") {
+    const nomeAdicional = adicionalSelecionado.dataset.nome;
+    const valorAdicional = parseFloat(adicionalSelecionado.dataset.valor);
+    adicionalTexto = `${nomeAdicional} (+ R$${valorAdicional.toFixed(2)})`;
+    preco += valorAdicional;
+  }
+
+  // Nome bonito do sabor selecionado
+  const nomeSabor = document.querySelector(`#sabor option[value="${saborSelecionado}"]`)?.textContent || "Não selecionado";
+
+  // Mensagem formatada com emojis e quebra de linha correta
+  const msg = `🎂 *Pedido de Bolo* 🎂\n\n` +
+              `📐 *Formato:* ${formato}\n` +
+              `📏 *Tamanho:* ${tamanho}\n` +
+              `🍰 *Sabor:* ${nomeSabor}\n` +
+              `🎁 *Adicional:* ${adicionalTexto}\n` +
+              `📝 *Observações:* ${obs || "Nenhuma"}\n` +
+              `💵 *Valor do Bolo:* R$ ${preco.toFixed(2)}`;
+
+  // Link para o WhatsApp com encode certo
+  const numeroWhatsApp = "11947640461"; // Substitua por exemplo: 5511999999999
+  const url = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(msg)}`;
+
+  // Abre o WhatsApp
+  window.open(url, "_blank");
+}
