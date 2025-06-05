@@ -46,56 +46,72 @@
 
   <label for="tamanho">Tamanho</label>
   <select id="tamanho">
-    <option>Pequeno (1kg)</option>
-    <option>Médio (2kg)</option>
-    <option>Grande (3kg)</option>
+    <option>P (15 fatias)</option>
+    <option>M (25 fatias)</option>
+    <option>G (35 fatias)</option>
   </select>
 
-  <label for="sabor">Sabor</label>
-  <select id="sabor">
+  <label for="massa">Massa</label>
+  <select id="massa">
     <option>Chocolate</option>
     <option>Baunilha</option>
-    <option>Red Velvet</option>
-    <option>Doce de Leite</option>
+    <option>Mista</option>
   </select>
 
   <label for="recheio">Recheio</label>
   <select id="recheio">
+    <option>Ninho com Morango</option>
     <option>Brigadeiro</option>
+    <option>Brigadeiro com Morango</option>
+    <option>Doce de Leite com Ameixa</option>
     <option>Beijinho</option>
-    <option>Morango</option>
-    <option>Nutella</option>
+    <option>Dois Amores</option>
+    <option>Ninho com Abacaxi</option>
+    <option>Prestígio</option>
+    <option>Churros</option>
+    <option>Ninho com Nutella</option>
+    <option>Abacaxi com Coco</option>
+  </select>
+
+  <label for="cobertura">Cobertura</label>
+  <select id="cobertura">
+    <option>Chantininho</option>
+    <option>Chantilly</option>
+    <option>Glacê</option>
   </select>
 
   <label for="adicionais">Adicionais</label>
   <select id="adicionais">
     <option>Sem adicionais</option>
+    <option>Bala de coco</option>
+    <option>Topper personalizado</option>
     <option>Granulado</option>
-    <option>Frutas</option>
-    <option>Chantilly</option>
+    <option>Raspas de chocolate</option>
   </select>
 
   <label for="obs">Observações</label>
-  <textarea id="obs" placeholder="Ex: Sem lactose, nome escrito no topo..."></textarea>
+  <textarea id="obs" placeholder="Ex: Nome no topo, sem lactose, cores desejadas..."></textarea>
 
   <button onclick="enviarPedido()">Fazer Pedido pelo WhatsApp</button>
 
   <script>
     function enviarPedido() {
       const tamanho = document.getElementById("tamanho").value;
-      const sabor = document.getElementById("sabor").value;
+      const massa = document.getElementById("massa").value;
       const recheio = document.getElementById("recheio").value;
+      const cobertura = document.getElementById("cobertura").value;
       const adicionais = document.getElementById("adicionais").value;
       const obs = document.getElementById("obs").value;
 
       const msg = `Olá! Gostaria de fazer um pedido de bolo:%0A
-      🧁 Tamanho: ${tamanho}%0A
-      🍰 Sabor: ${sabor}%0A
-      🎂 Recheio: ${recheio}%0A
+      🎂 Tamanho: ${tamanho}%0A
+      🍞 Massa: ${massa}%0A
+      🍫 Recheio: ${recheio}%0A
+      🍥 Cobertura: ${cobertura}%0A
       ➕ Adicionais: ${adicionais}%0A
       ✍️ Observações: ${obs || "Nenhuma"}`;
 
-      const telefone = "5511947640461"; // Ex: 11947640461
+      const telefone = "5511947640461";
       const url = `https://wa.me/${telefone}?text=${encodeURIComponent(msg)}`;
       window.open(url, "_blank");
     }
