@@ -179,7 +179,9 @@
   const formato = document.getElementById("formato").value;
   const tamanho = document.getElementById("tamanho").value;
   const saborSelecionado = document.getElementById("sabor").value;
-  const adicionalSelecionado = document.querySelector('input[name="adicional"]:checked');
+  const adicionalSelect = document.getElementById("adicional");
+  const adicionalValor = parseFloat(adicionalSelect.value);
+  const adicionalTexto = adicionalSelect.options[adicionalSelect.selectedIndex].text;
   const obs = document.getElementById("obs").value;
 
   // Busca o valor base do bolo
@@ -191,7 +193,7 @@
     const nomeAdicional = adicionalSelecionado.dataset.nome;
     const valorAdicional = parseFloat(adicionalSelecionado.dataset.valor);
     adicionalTexto = `${nomeAdicional} (+ R$${valorAdicional.toFixed(2)})`;
-    preco += valorAdicional;
+    preco += adicionalvalor;
   }
 
   // Nome bonito do sabor selecionado
