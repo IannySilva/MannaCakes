@@ -9,7 +9,7 @@
       font-family: Arial, sans-serif;
       background-color: #fff8f0;
       padding: 20px;
-      max-width: 500px;
+      max-width: 600px;
       margin: auto;
     }
     h1 {
@@ -39,77 +39,155 @@
     button:hover {
       background-color: #a0522d;
     }
+    #preco {
+      font-size: 1.1em;
+      font-weight: bold;
+      color: #444;
+      margin-bottom: 15px;
+    }
   </style>
 </head>
 <body>
-  <h1>Doces da Falela</h1>
+  <h1>Monte seu Bolo</h1>
+
+  <label for="formato">Formato</label>
+  <select id="formato" onchange="atualizarTamanhos()">
+    <option value="">Selecione o formato</option>
+    <option value="redondo">Redondo</option>
+    <option value="retangular">Retangular</option>
+  </select>
 
   <label for="tamanho">Tamanho</label>
-  <select id="tamanho">
-    <option>P (15 fatias)</option>
-    <option>M (25 fatias)</option>
-    <option>G (35 fatias)</option>
+  <select id="tamanho" onchange="atualizarPreco()">
+    <option>Selecione o formato primeiro</option>
   </select>
 
-  <label for="massa">Massa</label>
-  <select id="massa">
-    <option>Chocolate</option>
-    <option>Baunilha</option>
-    <option>Mista</option>
+  <label for="sabor">Sabor</label>
+  <select id="sabor" onchange="atualizarPreco()">
+    <option value="">Selecione o sabor</option>
+    <option value="comum_chocolate">Chocolate (comum)</option>
+    <option value="comum_baunilha">Baunilha (comum)</option>
+    <option value="especial_redvelvet">Red Velvet (especial)</option>
+    <option value="especial_doceleite">Doce de Leite (especial)</option>
   </select>
+
+  <div id="preco">Valor do Bolo: R$ 0,00</div>
 
   <label for="recheio">Recheio</label>
   <select id="recheio">
-    <option>Ninho com Morango</option>
     <option>Brigadeiro</option>
-    <option>Brigadeiro com Morango</option>
-    <option>Doce de Leite com Ameixa</option>
     <option>Beijinho</option>
-    <option>Dois Amores</option>
-    <option>Ninho com Abacaxi</option>
-    <option>Prestígio</option>
-    <option>Churros</option>
-    <option>Ninho com Nutella</option>
-    <option>Abacaxi com Coco</option>
-  </select>
-
-  <label for="cobertura">Cobertura</label>
-  <select id="cobertura">
-    <option>Chantininho</option>
-    <option>Chantilly</option>
-    <option>Glacê</option>
+    <option>Morango</option>
+    <option>Nutella</option>
   </select>
 
   <label for="adicionais">Adicionais</label>
   <select id="adicionais">
     <option>Sem adicionais</option>
-    <option>Bala de coco</option>
-    <option>Topper personalizado</option>
     <option>Granulado</option>
-    <option>Raspas de chocolate</option>
+    <option>Frutas</option>
+    <option>Chantilly</option>
   </select>
 
   <label for="obs">Observações</label>
-  <textarea id="obs" placeholder="Ex: Nome no topo, sem lactose, cores desejadas..."></textarea>
+  <textarea id="obs" placeholder="Ex: Sem lactose, nome escrito no topo..."></textarea>
 
   <button onclick="enviarPedido()">Fazer Pedido pelo WhatsApp</button>
 
   <script>
-    function enviarPedido() {
+    const precos = {
+      redondo: {
+        PP: 80,
+        P: 125,
+        M: 200,
+        G: 255
+      },
+      retangular: {
+        P: 185,
+        M: 220,
+        G: 295
+      },
+      adicionalEspecial: {
+        redondo: {
+          PP: 10,
+          P: 15,
+          M: 20,
+          G: 25
+        },
+        retangular: {
+          P: 15,
+          M: 30,
+          G: 30
+        }
+      }
+    };
+
+    const tamanhos = {
+      redondo: [
+        { nome: "PP", info: "4 a 8 fatias - R$ 80,00 (comum) / R$ 90,00 (especial)" },
+        { nome: "P", info: "10 a 15 fatias - R$ 125,00 (comum) / R$ 140,00 (especial)" },
+        { nome: "M", info: "20 a 22 fatias - R$ 200,00 (comum) / R$ 220,00 (especial)" },
+        { nome: "G", info: "32 a 38 fatias - R$ 255,00 (comum) / R$ 280,00 (especial)" }
+      ],
+      retangular: [
+        { nome: "P", info: "15 a 20 fatias - R$ 185,00 (comum) / R$ 200,00 (especial)" },
+        { nome: "M", info: "30 a 35 fatias - R$ 220,00 (comum) / R$ 250,00 (especial)" },
+        { nome: "G", info: "40 a 45 fatias - R$ 295,00 (comum) / R$ 325,00 (especial)" }
+      ]
+    };
+
+    function atualizarTamanhos() {
+      const formato = document.getElementById("formato").value;
+      const selectTamanho = document.getElementById("tamanho");
+      selectTamanho.innerHTML = "";
+
+      if (!formato) {
+        selectTamanho.innerHTML = "<option>Selecione o formato primeiro</option>";
+        return;
+      }
+
+      tamanhos[formato].forEach(t => {
+        const option = document.createElement("option");
+        option.value = t.nome;
+        option.textContent = `${t.nome} - ${t.info}`;
+        selectTamanho.appendChild(option);
+      });
+
+      atualizarPreco();
+    }
+
+    function atualizarPreco() {
+      const formato = document.getElementById("formato").value;
       const tamanho = document.getElementById("tamanho").value;
-      const massa = document.getElementById("massa").value;
+      const sabor = document.getElementById("sabor").value;
+      const precoBase = precos[formato]?.[tamanho] || 0;
+      let total = precoBase;
+
+      if (sabor.includes("especial")) {
+        const adicional = precos.adicionalEspecial[formato]?.[tamanho] || 0;
+        total += adicional;
+      }
+
+      document.getElementById("preco").innerText = `Valor do Bolo: R$ ${total.toFixed(2).replace(".", ",")}`;
+    }
+
+    function enviarPedido() {
+      const formato = document.getElementById("formato").value;
+      const tamanho = document.getElementById("tamanho").value;
+      const sabor = document.getElementById("sabor").selectedOptions[0].textContent;
       const recheio = document.getElementById("recheio").value;
-      const cobertura = document.getElementById("cobertura").value;
       const adicionais = document.getElementById("adicionais").value;
       const obs = document.getElementById("obs").value;
+      const valor = document.getElementById("preco").innerText;
 
       const msg = `Olá! Gostaria de fazer um pedido de bolo:%0A
-      🎂 Tamanho: ${tamanho}%0A
-      🍞 Massa: ${massa}%0A
-      🍫 Recheio: ${recheio}%0A
-      🍥 Cobertura: ${cobertura}%0A
+      🧁 Formato: ${formato}%0A
+      📏 Tamanho: ${tamanho}%0A
+      🍰 Sabor: ${sabor}%0A
+      🎂 Recheio: ${recheio}%0A
       ➕ Adicionais: ${adicionais}%0A
-      ✍️ Observações: ${obs || "Nenhuma"}`;
+      ✍️ Observações: ${obs || "Nenhuma"}%0A
+      💰 ${valor}`;
 
       const telefone = "5511947640461";
       const url = `https://wa.me/${telefone}?text=${encodeURIComponent(msg)}`;
