@@ -62,39 +62,44 @@
     <option>Selecione o formato primeiro</option>
   </select>
 
-  <label for="sabor">Sabor</label>
-  <select id="sabor" onchange="atualizarPreco()">
-    <option value="">Selecione o sabor</option>
-    <option value="comum_brigadeiro">Brigadeiro (comum)</option>
-    <option value="comum_leiteninho">Leite Ninho (comum)</option>
-    <option value="comum_prestigio">Prestigio (comum)</option>
-    <option value="comum_beijinho">Beijinho (comum)</option>
-    <option value="comum_docedeleite">Doce de Leite (comum)</option>
-    <option value="especial_brigadeiroamendoim">Brigadeiro c/ Amendoim (especial)</option>
-    <option value="especial_brigmorango">Brigadeiro c/ Morango (especial)</option>
-    <option value="especial_doceleitemor">Doce de Leite c/ Morango (especial)</option>
-    <option value="especial_doceleitebj">Doce de Leite / Beijinho (especial)</option>
-    <option value="especial_doceleiteamei">Doce de Leite c/ Ameixa (especial)</option>
-    <option value="especial_docedeleiteabacaxi">Doce de Leite, Abacaxi / Beijinho (especial)</option>
-    <option value="especial_abacaxi">Abacaxi c/ Leite Ninho (especial)</option>
-    <option value="especial_abacaxidoce">Abacaxi c/ Doce de Leite (especial)</option>
-    <option value="especial_doisamores">2 amores (Brigadeiro c/ prestigio) (especial)</option>
-    <option value="especial_ninhomor">Ninho c/ Morango (especial)</option>
-    <option value="especial_ninhobrig">Ninho / Brigadeiro (especial)</option>
-    <option value="especial_ninhobrimor">Ninho c/ morango / Brig. c/ Morango (especial)</option>
-    <option value="especial_maracuja">Brigadeiro de Maracujá (especial)</option>
-    <option value="especial_maracujabrig">Brigadeiro de Maracujá / Brigadeiro (especial)</option>
-    <option value="especial_mousseninho">Mousse de Ninho c/ Morango (especial)</option>
-    <option value="especial_moussemorbrig">Mousse de Morango com Brigadeiro (especial)</option>
-    <option value="especial_moussechoc">Mousse de Chocolate (especial)</option>
-    <option value="especial_moussebri">Mousse de Chocolate c/ Brigadeiros (especial)</option>
-    <option value="especial_moussemor">Mousse de Chocolate c/ Morango (especial)</option>
-    <option value="especial_moussepres">Mousse de Chocolate c/ Prestigio (especial)</option>
-    <option value="especial_mousseabacaxi">Mousse de 4 Leites c/ Abacaxi (especial)</option>
-    <option value="especial_moussebranco">Mousse de Cholate Branco c/ Pedaços (especial)</option>
-    <option value="especial_moussemaracuja">Mousse de Maracujá (especial)</option>
-    <option value="especial_moussemaracuja">Mousse de Maracujá com Brigadeiro (especial)</option>
-  </select>
+ <label for="sabor">Sabor</label>
+<select id="sabor" onchange="atualizarPreco()">
+  <option value="">Selecione o sabor</option>
+  
+  <!-- Comuns -->
+  <option value="comum_brigadeiro">Brigadeiro (comum)</option>
+  <option value="comum_leiteninho">Leite Ninho (comum)</option>
+  <option value="comum_prestigio">Prestígio (comum)</option>
+  <option value="comum_beijinho">Beijinho (comum)</option>
+  <option value="comum_docedeleite">Doce de Leite (comum)</option>
+  
+  <!-- Especiais -->
+  <option value="especial_brigadeiro_amendoim">Brigadeiro c/ Amendoim (especial)</option>
+  <option value="especial_brigadeiro_morango">Brigadeiro c/ Morango (especial)</option>
+  <option value="especial_docedeleite_morango">Doce de Leite c/ Morango (especial)</option>
+  <option value="especial_docedeleite_beijinho">Doce de Leite / Beijinho (especial)</option>
+  <option value="especial_docedeleite_ameixa">Doce de Leite c/ Ameixa (especial)</option>
+  <option value="especial_docedeleite_abacaxi_beijinho">Doce de Leite, Abacaxi / Beijinho (especial)</option>
+  <option value="especial_abacaxi_ninho">Abacaxi c/ Leite Ninho (especial)</option>
+  <option value="especial_abacaxi_docedeleite">Abacaxi c/ Doce de Leite (especial)</option>
+  <option value="especial_dois_amores">2 Amores (Brigadeiro c/ Prestígio) (especial)</option>
+  <option value="especial_ninho_morango">Ninho c/ Morango (especial)</option>
+  <option value="especial_ninho_brigadeiro">Ninho / Brigadeiro (especial)</option>
+  <option value="especial_ninho_morango_brigadeiro">Ninho c/ Morango / Brig. c/ Morango (especial)</option>
+  <option value="especial_brigadeiro_maracuja">Brigadeiro de Maracujá (especial)</option>
+  <option value="especial_brigadeiro_maracuja_trad">Brigadeiro de Maracujá / Brigadeiro (especial)</option>
+  <option value="especial_mousse_ninho_morango">Mousse de Ninho c/ Morango (especial)</option>
+  <option value="especial_mousse_morango_brigadeiro">Mousse de Morango com Brigadeiro (especial)</option>
+  <option value="especial_mousse_chocolate">Mousse de Chocolate (especial)</option>
+  <option value="especial_mousse_chocolate_brigadeiro">Mousse de Chocolate c/ Brigadeiros (especial)</option>
+  <option value="especial_mousse_chocolate_morango">Mousse de Chocolate c/ Morango (especial)</option>
+  <option value="especial_mousse_chocolate_prestigio">Mousse de Chocolate c/ Prestígio (especial)</option>
+  <option value="especial_mousse_4leites_abacaxi">Mousse de 4 Leites c/ Abacaxi (especial)</option>
+  <option value="especial_mousse_chocolate_branco">Mousse de Chocolate Branco c/ Pedaços (especial)</option>
+  <option value="especial_mousse_maracuja">Mousse de Maracujá (especial)</option>
+  <option value="especial_mousse_maracuja_brigadeiro">Mousse de Maracujá com Brigadeiro (especial)</option>
+</select>
+
 
   <div id="preco">Valor do Bolo: R$ 0,00</div>
 
