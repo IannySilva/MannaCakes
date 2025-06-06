@@ -176,42 +176,49 @@
     }
 
     function enviarPedido() {
-  const formato = document.getElementById("formato").value;
-  const tamanho = document.getElementById("tamanho").value;
-  const saborSelecionado = document.getElementById("sabor").value;
-  const adicionalSelect = document.getElementById("adicional");
-  const adicionalValor = parseFloat(adicionalSelect.value);
-  const adicionalTexto = adicionalSelect.options[adicionalSelect.selectedIndex].text;
-  const obs = document.getElementById("obs").value;
+      const formato = document.getElementById("formato").value;
+      const tamanho = document.getElementById("tamanho").value;
+      const saborSelecionado = document.getElementById("sabor").value;
+      const adicionalSelect = document.getElementById("adicional");
+      const adicionalValor = parseFloat(adicionalSelect.value);
+      const adicionalTexto = adicionalSelect.options[adicionalSelect.selectedIndex].text;
+      const obs = document.getElementById("obs").value;
 
-  // Busca o valor base do bolo
-  let preco = calcularPreco(formato, tamanho, saborSelecionado);
+      const nomeSabor = document.querySelector(`#sabor option[value="${saborSelecionado}"]`)?.textContent || "Não selecionado";
 
-  // Informações do adicional
-  let adicionalTexto = "Sem adicionais";
-  if (adicionalSelecionado && adicionalSelecionado.value !== "") {
-    const nomeAdicional = adicionalSelecionado.dataset.nome;
-    const valorAdicional = parseFloat(adicionalSelecionado.dataset.valor);
-    adicionalTexto = `${nomeAdicional} (+ R$${valorAdicional.toFixed(2)})`;
-    preco += adicionalvalor;
-  }
+      // Preço calculado novamente
+      const tipoSabor = saborSelecionado.startsWith("especial") ? "especial" : "comum";
+      const precos = {
+        redondo: {
+          pp: { comum: 80, especial: 90 },
+          p: { comum: 125, especial: 140 },
+          m: { comum: 200, especial: 220 },
+          g: { comum: 255, especial: 280 },
+        },
+        retangular: {
+          p: { comum: 185, especial: 200 },
+          m: { comum: 220, especial: 250 },
+          g: { comum: 295, especial: 325 },
+        },
+      };
 
-  // Nome bonito do sabor selecionado
-  const nomeSabor = document.querySelector(`#sabor option[value="${saborSelecionado}"]`)?.textContent || "Não selecionado";
+      let preco = 0;
+      if (formato && tamanho && precos[formato] && precos[formato][tamanho]) {
+        preco = precos[formato][tamanho][tipoSabor] + adicionalValor;
+      }
 
-  // Mensagem formatada com emojis e quebra de linha correta
-  const msg = `🎂 *Pedido de Bolo* 🎂\n\n` +
-              `📐 *Formato:* ${formato}\n` +
-              `📏 *Tamanho:* ${tamanho}\n` +
-              `🍰 *Sabor:* ${nomeSabor}\n` +
-              `🎁 *Adicional:* ${adicionalTexto}\n` +
-              `📝 *Observações:* ${obs || "Nenhuma"}\n` +
-              `💵 *Valor do Bolo:* R$ ${preco.toFixed(2)}`;
+      const msg = `🎂 *Pedido de Bolo* 🎂\n\n` +
+                  `📐 *Formato:* ${formato}\n` +
+                  `📏 *Tamanho:* ${tamanho}\n` +
+                  `🍰 *Sabor:* ${nomeSabor}\n` +
+                  `🎁 *Adicional:* ${adicionalTexto}\n` +
+                  `📝 *Observações:* ${obs || "Nenhuma"}\n` +
+                  `💵 *Valor do Bolo:* R$ ${preco.toFixed(2).replace(".", ",")}`;
 
-  // Link para o WhatsApp com encode certo
-  const numeroWhatsApp = "11947640461"; // Substitua por exemplo: 5511999999999
-  const url = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(msg)}`;
-
-  // Abre o WhatsApp
-  window.open(url, "_blank");
-}
+      const numeroWhatsApp = "5511947640461"; // coloque seu número com DDD e código do país
+      const url = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(msg)}`;
+      window.open(url, "_blank");
+    }
+  </script>
+</body>
+</html>
