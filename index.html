@@ -161,7 +161,9 @@
       window.open(url, "_blank");
     }
 
-    carregarPrecos();
+    window.onload = async () => {
+  await carregarPrecos();
+};
   </script>
 </body>
 </html>
