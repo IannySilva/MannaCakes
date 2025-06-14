@@ -65,34 +65,8 @@
   <label for="sabor">Sabor</label>
   <select id="sabor" onchange="atualizarPreco()">
     <option value="">Selecione o sabor</option>
-    <option value="comum_brigadeiro">Brigadeiro (comum)</option>
-    <option value="comum_leiteninho">Leite Ninho (comum)</option>
-    <option value="comum_prestigio">Prestígio (comum)</option>
-    <option value="comum_beijinho">Beijinho (comum)</option>
-    <option value="comum_docedeleite">Doce de Leite (comum)</option>
-    <option value="especial_brigadeiroamendoim">Brigadeiro c/ Amendoim (especial)</option>
-    <option value="especial_brigmorango">Brigadeiro c/ Morango (especial)</option>
-    <option value="especial_doceleitemor">Doce de Leite c/ Morango (especial)</option>
-    <option value="especial_doceleitebj">Doce de Leite / Beijinho (especial)</option>
-    <option value="especial_doceleiteamei">Doce de Leite c/ Ameixa (especial)</option>
-    <option value="especial_docedeleiteabacaxi">Doce de Leite, Abacaxi / Beijinho (especial)</option>
-    <option value="especial_abacaxi">Abacaxi c/ Leite Ninho (especial)</option>
-    <option value="especial_abacaxidoce">Abacaxi c/ Doce de Leite (especial)</option>
-    <option value="especial_doisamores">2 Amores (Brigadeiro c/ Prestígio) (especial)</option>
-    <option value="especial_ninhomor">Ninho c/ Morango (especial)</option>
-    <option value="especial_ninhobrig">Ninho / Brigadeiro (especial)</option>
-    <option value="especial_ninhobrimor">Ninho c/ Morango / Brig. c/ Morango (especial)</option>
-    <option value="especial_maracuja">Brigadeiro de Maracujá (especial)</option>
-    <option value="especial_maracujabrig">Brigadeiro de Maracujá / Brigadeiro (especial)</option>
-    <option value="especial_mousseninho">Mousse de Ninho c/ Morango (especial)</option>
-    <option value="especial_moussemorbrig">Mousse de Morango c/ Brigadeiro (especial)</option>
-    <option value="especial_moussechoc">Mousse de Chocolate (especial)</option>
-    <option value="especial_moussebri">Mousse de Chocolate c/ Brigadeiros (especial)</option>
-    <option value="especial_moussemor">Mousse de Chocolate c/ Morango (especial)</option>
-    <option value="especial_moussepres">Mousse de Chocolate c/ Prestígio (especial)</option>
-    <option value="especial_mousseabacaxi">Mousse de 4 Leites c/ Abacaxi (especial)</option>
-    <option value="especial_moussebranco">Mousse de Chocolate Branco c/ Pedaços (especial)</option>
-    <option value="especial_moussemaracuja">Mousse de Maracujá (especial)</option>
+    <option value="comum">Comum</option>
+    <option value="especial">Especial</option>
   </select>
 
   <label for="adicional">Adicional</label>
@@ -110,38 +84,35 @@
   <button onclick="enviarPedido()">Fazer Pedido pelo WhatsApp</button>
 
   <script>
-    // Atualiza os tamanhos de acordo com o formato selecionado
+    let precos = {};
+
+    async function carregarPrecos() {
+      try {
+        const response = await fetch("https://script.google.com/macros/s/AKfycbzwtl2qwqEB26ZKZqB3MDG1-os0G5LuAPzXb9524HJPYUVqavbxwI0yYGI3nKUXINl9Mw/exec");
+        const dados = await response.json();
+        precos = dados; // estrutura: precos[formato][tamanho][sabor]
+      } catch (erro) {
+        console.error("Erro ao carregar preços:", erro);
+      }
+    }
+
     function atualizarTamanhos() {
       const formato = document.getElementById("formato").value;
       const tamanhoSelect = document.getElementById("tamanho");
       tamanhoSelect.innerHTML = '<option value="">Selecione o tamanho</option>';
 
-      const opcoes = {
-        redondo: [
-          { value: "pp", text: "PP (4 a 8 fatias)" },
-          { value: "p", text: "P (10 a 15 fatias)" },
-          { value: "m", text: "M (20 a 22 fatias)" },
-          { value: "g", text: "G (32 a 38 fatias)" },
-        ],
-        retangular: [
-          { value: "p", text: "P (15 a 20 fatias)" },
-          { value: "m", text: "M (30 a 35 fatias)" },
-          { value: "g", text: "G (40 a 45 fatias)" },
-        ],
-      };
-
-      if (formato && opcoes[formato]) {
-        opcoes[formato].forEach(opt => {
+      if (formato && precos[formato]) {
+        Object.keys(precos[formato]).forEach(tamanho => {
           const option = document.createElement("option");
-          option.value = opt.value;
-          option.textContent = opt.text;
+          option.value = tamanho;
+          option.textContent = tamanho.toUpperCase();
           tamanhoSelect.appendChild(option);
         });
       }
+
       atualizarPreco();
     }
 
-    // Calcula e exibe o preço total do bolo
     function atualizarPreco() {
       const formato = document.getElementById("formato").value;
       const tamanho = document.getElementById("tamanho").value;
@@ -150,25 +121,13 @@
 
       let precoBase = 0;
 
-      // Tabela de preços fixa (os mesmos valores atuais)
-      const precos = {
-        redondo: {
-          pp: { comum: 80, especial: 90 },
-          p: { comum: 125, especial: 140 },
-          m: { comum: 200, especial: 220 },
-          g: { comum: 255, especial: 280 },
-        },
-        retangular: {
-          p: { comum: 185, especial: 200 },
-          m: { comum: 220, especial: 250 },
-          g: { comum: 295, especial: 325 },
-        },
-      };
-
-      const tipoSabor = sabor.startsWith("especial") ? "especial" : "comum";
-
-      if (formato && tamanho && precos[formato] && precos[formato][tamanho]) {
-        precoBase = precos[formato][tamanho][tipoSabor];
+      if (
+        formato && tamanho && sabor &&
+        precos[formato] &&
+        precos[formato][tamanho] &&
+        precos[formato][tamanho][sabor]
+      ) {
+        precoBase = parseFloat(precos[formato][tamanho][sabor]);
       }
 
       const precoFinal = precoBase + adicional;
@@ -177,78 +136,32 @@
         precoFinal ? `Total: R$ ${precoFinal.toFixed(2).replace(".", ",")}` : "";
     }
 
-    // Envia os dados do pedido para a planilha via API do Google Sheets
-    function enviarParaPlanilha(formato, tamanho, nomeSabor, adicionalTexto, obs, preco) {
-      const url = "https://script.google.com/macros/s/AKfycbzwtl2qwqEB26ZKZqB3MDG1-os0G5LuAPzXb9524HJPYUVqavbxwI0yYGI3nKUXINl9Mw/exec";
-
-      const dados = {
-        formato,
-        tamanho,
-        sabor: nomeSabor,
-        adicional: adicionalTexto,
-        observacoes: obs,
-        preco: preco.toFixed(2).replace(".", ",")
-      };
-
-      fetch(url, {
-        method: "POST",
-        mode: "no-cors", // modo no-cors para evitar problemas com CORS
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(dados),
-      });
-    }
-
-    // Função que monta a mensagem, envia os dados para a planilha e abre o WhatsApp
     function enviarPedido() {
       const formato = document.getElementById("formato").value;
       const tamanho = document.getElementById("tamanho").value;
-      const saborSelecionado = document.getElementById("sabor").value;
+      const sabor = document.getElementById("sabor").value;
       const adicionalSelect = document.getElementById("adicional");
       const adicionalValor = parseFloat(adicionalSelect.value);
       const adicionalTexto = adicionalSelect.options[adicionalSelect.selectedIndex].text;
       const obs = document.getElementById("obs").value;
 
-      const nomeSabor = document.querySelector(`#sabor option[value="${saborSelecionado}"]`)?.textContent || "Não selecionado";
+      const precoBase = precos[formato]?.[tamanho]?.[sabor] || 0;
+      const precoFinal = parseFloat(precoBase) + adicionalValor;
 
-      // Recalcula o preço com base na tabela fixa
-      const tipoSabor = saborSelecionado.startsWith("especial") ? "especial" : "comum";
-      const precos = {
-        redondo: {
-          pp: { comum: 80, especial: 90 },
-          p: { comum: 125, especial: 140 },
-          m: { comum: 200, especial: 220 },
-          g: { comum: 255, especial: 280 },
-        },
-        retangular: {
-          p: { comum: 185, especial: 200 },
-          m: { comum: 220, especial: 250 },
-          g: { comum: 295, especial: 325 },
-        },
-      };
-
-      let preco = 0;
-      if (formato && tamanho && precos[formato] && precos[formato][tamanho]) {
-        preco = precos[formato][tamanho][tipoSabor] + adicionalValor;
-      }
-
-      // Envia os dados para o Google Sheets
-      enviarParaPlanilha(formato, tamanho, nomeSabor, adicionalTexto, obs, preco);
-
-      // Monta a mensagem para o WhatsApp
       const msg = `🎂 *Pedido de Bolo* 🎂\n\n` +
                   `📐 *Formato:* ${formato}\n` +
-                  `📏 *Tamanho:* ${tamanho}\n` +
-                  `🍰 *Sabor:* ${nomeSabor}\n` +
+                  `📏 *Tamanho:* ${tamanho.toUpperCase()}\n` +
+                  `🍰 *Sabor:* ${sabor}\n` +
                   `🎁 *Adicional:* ${adicionalTexto}\n` +
                   `📝 *Observações:* ${obs || "Nenhuma"}\n` +
-                  `💵 *Valor do Bolo:* R$ ${preco.toFixed(2).replace(".", ",")}`;
+                  `💵 *Valor do Bolo:* R$ ${precoFinal.toFixed(2).replace(".", ",")}`;
 
-      const numeroWhatsApp = "5511947640461"; // seu número com DDD e código do país
-      const urlWhats = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(msg)}`;
-      window.open(urlWhats, "_blank");
+      const numeroWhatsApp = "5511947640461";
+      const url = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(msg)}`;
+      window.open(url, "_blank");
     }
+
+    carregarPrecos();
   </script>
 </body>
 </html>
