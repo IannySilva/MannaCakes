@@ -88,7 +88,7 @@
 
     async function carregarPrecos() {
       try {
-        const response = await fetch("https://script.google.com/macros/s/AKfycbzwtl2qwqEB26ZKZqB3MDG1-os0G5LuAPzXb9524HJPYUVqavbxwI0yYGI3nKUXINl9Mw/exec");
+        const response = await fetch("https://script.google.com/macros/s/AKfycbxAO95Sl8VhUl0Fp8AH0yUdHh-M8IESJvR-uZQyRkAO25d0z63xRzqyWQN8UvU3HQYBcQ/exec");
         const dados = await response.json();
         precos = dados; // estrutura: precos[formato][tamanho][sabor]
       } catch (erro) {
