@@ -110,6 +110,7 @@
   <button onclick="enviarPedido()">Fazer Pedido pelo WhatsApp</button>
 
   <script>
+    // Atualiza os tamanhos de acordo com o formato selecionado
     function atualizarTamanhos() {
       const formato = document.getElementById("formato").value;
       const tamanhoSelect = document.getElementById("tamanho");
@@ -137,10 +138,10 @@
           tamanhoSelect.appendChild(option);
         });
       }
-
       atualizarPreco();
     }
 
+    // Calcula e exibe o preço total do bolo
     function atualizarPreco() {
       const formato = document.getElementById("formato").value;
       const tamanho = document.getElementById("tamanho").value;
@@ -149,6 +150,7 @@
 
       let precoBase = 0;
 
+      // Tabela de preços fixa (os mesmos valores atuais)
       const precos = {
         redondo: {
           pp: { comum: 80, especial: 90 },
@@ -175,6 +177,30 @@
         precoFinal ? `Total: R$ ${precoFinal.toFixed(2).replace(".", ",")}` : "";
     }
 
+    // Envia os dados do pedido para a planilha via API do Google Sheets
+    function enviarParaPlanilha(formato, tamanho, nomeSabor, adicionalTexto, obs, preco) {
+      const url = "https://script.google.com/macros/s/AKfycbzwtl2qwqEB26ZKZqB3MDG1-os0G5LuAPzXb9524HJPYUVqavbxwI0yYGI3nKUXINl9Mw/exec";
+
+      const dados = {
+        formato,
+        tamanho,
+        sabor: nomeSabor,
+        adicional: adicionalTexto,
+        observacoes: obs,
+        preco: preco.toFixed(2).replace(".", ",")
+      };
+
+      fetch(url, {
+        method: "POST",
+        mode: "no-cors", // modo no-cors para evitar problemas com CORS
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(dados),
+      });
+    }
+
+    // Função que monta a mensagem, envia os dados para a planilha e abre o WhatsApp
     function enviarPedido() {
       const formato = document.getElementById("formato").value;
       const tamanho = document.getElementById("tamanho").value;
@@ -186,7 +212,7 @@
 
       const nomeSabor = document.querySelector(`#sabor option[value="${saborSelecionado}"]`)?.textContent || "Não selecionado";
 
-      // Preço calculado novamente
+      // Recalcula o preço com base na tabela fixa
       const tipoSabor = saborSelecionado.startsWith("especial") ? "especial" : "comum";
       const precos = {
         redondo: {
@@ -207,6 +233,10 @@
         preco = precos[formato][tamanho][tipoSabor] + adicionalValor;
       }
 
+      // Envia os dados para o Google Sheets
+      enviarParaPlanilha(formato, tamanho, nomeSabor, adicionalTexto, obs, preco);
+
+      // Monta a mensagem para o WhatsApp
       const msg = `🎂 *Pedido de Bolo* 🎂\n\n` +
                   `📐 *Formato:* ${formato}\n` +
                   `📏 *Tamanho:* ${tamanho}\n` +
@@ -215,9 +245,9 @@
                   `📝 *Observações:* ${obs || "Nenhuma"}\n` +
                   `💵 *Valor do Bolo:* R$ ${preco.toFixed(2).replace(".", ",")}`;
 
-      const numeroWhatsApp = "5511947640461"; // coloque seu número com DDD e código do país
-      const url = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(msg)}`;
-      window.open(url, "_blank");
+      const numeroWhatsApp = "5511947640461"; // seu número com DDD e código do país
+      const urlWhats = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(msg)}`;
+      window.open(urlWhats, "_blank");
     }
   </script>
 </body>
